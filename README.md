@@ -305,4 +305,4 @@ curl -X GET http://localhost:8000/customers/1/ledger
 
 ## 8. License
 
-This project was built for the Airtribe Backend Engineering Assessment.
+This project is open-source software licensed under the [MIT License](https://opensource.org/licenses/MIT).
