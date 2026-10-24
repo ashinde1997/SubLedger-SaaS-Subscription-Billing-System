@@ -1,0 +1,436 @@
+{
+  "info": {
+    "name": "SubLedger - SaaS Subscription & Billing System (India Data)",
+    "_postman_id": "7b3b4f52-4781-4ce8-89c5-3498b584b423",
+    "description": "Postman collection for SubLedger SaaS Billing backend pre-configured with realistic Indian SaaS pricing (INR), customer entities, UPI/NetBanking payment references, and audit ledgers.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "planId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "customerId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "subscriptionId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "invoiceId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Plans (India INR)",
+      "item": [
+        {
+          "name": "Create Plan - Pro Monthly (₹1,499 INR)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pro Monthly INR\",\n  \"description\": \"Professional billing plan for fast-growing Indian startups\",\n  \"billing_cycle\": \"monthly\",\n  \"price\": 1499.00,\n  \"currency\": \"INR\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "Create Plan - Enterprise Annual (₹14,999 INR)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Enterprise Annual INR\",\n  \"description\": \"Annual enterprise SaaS tier with priority Indian support and custom integrations\",\n  \"billing_cycle\": \"yearly\",\n  \"price\": 14999.00,\n  \"currency\": \"INR\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "List All Plans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/plans",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans"]
+            }
+          }
+        },
+        {
+          "name": "Update Plan Price / Deactivate",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 1699.00,\n  \"description\": \"Updated pricing for Pro Monthly tier\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/plans/{{planId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["plans", "{{planId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Customers (Indian Companies)",
+      "item": [
+        {
+          "name": "Create Customer - Aarav Sharma (Tata Digital)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aarav Sharma\",\n  \"email\": \"aarav.sharma@tatadigital.in\",\n  \"company_name\": \"Tata Digital Limited\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        },
+        {
+          "name": "Create Customer - Priya Patel (Zerodha Tech)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Patel\",\n  \"email\": \"priya.patel@zerodhatech.in\",\n  \"company_name\": \"Zerodha Broking Limited\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        },
+        {
+          "name": "Create Customer - Duplicate Email Check (Should Fail 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Aarav Sharma Duplicate\",\n  \"email\": \"aarav.sharma@tatadigital.in\",\n  \"company_name\": \"Duplicate Inc\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        },
+        {
+          "name": "List Customers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        },
+        {
+          "name": "Get Customer Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/customers/{{customerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers", "{{customerId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Subscriptions",
+      "item": [
+        {
+          "name": "Create Subscription - Aarav Sharma on Pro Monthly",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"plan_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions"]
+            }
+          }
+        },
+        {
+          "name": "Create Duplicate Subscription to Same Plan (Should Fail 422)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": 1,\n  \"plan_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions"]
+            }
+          }
+        },
+        {
+          "name": "List Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Subscription",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/subscriptions/{{subscriptionId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["subscriptions", "{{subscriptionId}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Invoices",
+      "item": [
+        {
+          "name": "Generate Invoice for Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subscription_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/invoices/generate",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", "generate"]
+            }
+          }
+        },
+        {
+          "name": "List Invoices",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/invoices",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices"]
+            }
+          }
+        },
+        {
+          "name": "Get Invoice Details by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/invoices/{{invoiceId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["invoices", "{{invoiceId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Payments (India UPI / Razorpay)",
+      "item": [
+        {
+          "name": "Record Partial Payment - UPI (₹500 INR)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": 1,\n  \"amount\": 500.00,\n  \"currency\": \"INR\",\n  \"status\": \"success\",\n  \"provider_reference\": \"pay_razorpay_upi_98234812\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/record",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "record"]
+            }
+          }
+        },
+        {
+          "name": "Record Remaining Payment - NetBanking (₹999 INR)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": 1,\n  \"amount\": 999.00,\n  \"currency\": \"INR\",\n  \"status\": \"success\",\n  \"provider_reference\": \"pay_hdfc_netbanking_781293\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/record",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "record"]
+            }
+          }
+        },
+        {
+          "name": "Record Failed Payment Attempt - UPI Timeout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": 1,\n  \"amount\": 1499.00,\n  \"currency\": \"INR\",\n  \"status\": \"failed\",\n  \"provider_reference\": \"pay_failed_upi_txn_001\",\n  \"failure_reason\": \"UPI mandate approval timed out by customer bank\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/record",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "record"]
+            }
+          }
+        },
+        {
+          "name": "Record Excess Payment (Should Fail 422 - Exceeds Unpaid Balance)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": 1,\n  \"amount\": 5000.00,\n  \"currency\": \"INR\",\n  \"status\": \"success\",\n  \"provider_reference\": \"pay_excess_fail\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/payments/record",
+              "host": ["{{baseUrl}}"],
+              "path": ["payments", "record"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Customer Ledger & Audit Trail",
+      "item": [
+        {
+          "name": "Get Customer Ledger History - Aarav Sharma",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/customers/1/ledger",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers", "1", "ledger"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

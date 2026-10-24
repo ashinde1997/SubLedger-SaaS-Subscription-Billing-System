@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: subledger_api
+    ports:
+      - "8000:8000"
+    environment:
+      - PROJECT_NAME=SubLedger - SaaS Subscription & Billing System
+      - ENVIRONMENT=production
+      - DEBUG=False
+      - DATABASE_URL=sqlite:////app/data/subledger.db
+    volumes:
+      - subledger_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  subledger_data:
